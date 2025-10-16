@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import { type LayoutRectangle } from 'react-native';
+import type { SharedValue } from 'react-native-reanimated';
 
 export type PiPViewInitialPosition = {
   x: number | 'left' | 'right' | 'center';
@@ -35,6 +36,12 @@ export type ScreenLayoutDimensions = ContainerLayoutRectangle & {
   horizontalOffet?: number;
 };
 
+export interface UseAnimationValues {
+  translationX: SharedValue<number>;
+  translationY: SharedValue<number>;
+  edges: SharedValue<Edges | null>;
+}
+
 export interface PiPViewProps {
   disabled?: boolean;
   destroyArea?: DestroyArea;
@@ -48,4 +55,6 @@ export interface PiPViewProps {
   };
   onDestroy?: () => void;
   onPress?: () => void;
+  /** Callback that exposes animation values for consumers to add extra functionality */
+  onUseAnimationValues?: (values: UseAnimationValues) => void;
 }

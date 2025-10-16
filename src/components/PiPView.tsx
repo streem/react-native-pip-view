@@ -1,4 +1,4 @@
-import { useCallback, useMemo, type PropsWithChildren } from 'react';
+import { useCallback, useEffect, useMemo, type PropsWithChildren } from 'react';
 import { type LayoutRectangle } from 'react-native';
 import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
 
@@ -12,7 +12,13 @@ export const PiPView = ({
   children,
   ...props
 }: PropsWithChildren<PiPViewProps>) => {
-  const { layout, initialPosition, onDestroy, edgeHandle } = props;
+  const {
+    layout,
+    initialPosition,
+    onDestroy,
+    edgeHandle,
+    onUseAnimationValues,
+  } = props;
 
   const dockSide = useSharedValue<EdgeSide | null>(null);
 
@@ -119,6 +125,16 @@ export const PiPView = ({
       props,
     ]
   );
+
+  useEffect(() => {
+    onUseAnimationValues?.({
+      translationX: contextValue.translationX,
+      translationY: contextValue.translationY,
+      edges: contextValue.edges,
+    });
+    // no need to add contextValue to deps, as the individual values are stable refs
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onUseAnimationValues]);
 
   return (
     <PiPViewProvider {...contextValue}>
