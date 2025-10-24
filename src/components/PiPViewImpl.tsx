@@ -133,7 +133,7 @@ export const PiPViewImpl = ({ children }: PropsWithChildren) => {
   }, [
     layout.horizontalOffet,
     layout.width,
-    scaledElementLayout.value.width,
+    scaledElementLayout,
     dockSide,
     translationX,
     findNearestYEdge,
