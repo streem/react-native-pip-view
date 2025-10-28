@@ -33,7 +33,8 @@ export type DestroyArea = {
 };
 
 export type ScreenLayoutDimensions = ContainerLayoutRectangle & {
-  horizontalOffet?: number;
+  horizontalOffset?: number;
+  verticalOffset?: number;
 };
 
 export interface UseAnimationValues {

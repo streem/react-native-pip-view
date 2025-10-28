@@ -4,16 +4,17 @@ A lightweight, customizable **Picture-in-Picture (PiP)** component for **React N
 
 ---
 
-## Demo: 
+## Demo:
+
 https://x.com/tsolfitsmexx/status/1912752417176793170?s=46&t=kx6uESwbDrRgTUOCDr1tMQ
 
 ## ✨ Features
 
-- 🧲 Snap to screen edges  
-- 🕳️ Optional destroy area  
+- 🧲 Snap to screen edges
+- 🕳️ Optional destroy area
 - 📏 Resizing
-- 🔽 Can hide the PiP window when dropped near the edge  
-- 🔄 customizable layout and behavior 
+- 🔽 Can hide the PiP window when dropped near the edge
+- 🔄 customizable layout and behavior
 
 ---
 
@@ -60,7 +61,8 @@ export default function App() {
         height: height - 80,
         y: 100,
         x: 0,
-        horizontalOffet: 12,
+        horizontalOffset: 12,
+        verticalOffset: 12,
       }}
     >
       <View style={{ width: 120, height: 80, backgroundColor: 'gray' }} />
@@ -105,7 +107,7 @@ interface DestroyArea {
 ### 📐 `ScreenLayoutDimensions`
 
 > ⚠️ **Important:** If you enable `snapToEdges`, make sure the `layout.width` matches the full screen width. This ensures the PiP view can properly align with screen edges.
-> You can also use the optional `horizontalOffet` prop to add padding between the PiP view and the screen edge after snapping. This helps prevent the PiP from being flush against the edge.
+> You can also use the optional `horizontalOffset` and `verticalOffset` props to add padding between the PiP view and the screen edge after snapping. This helps prevent the PiP from being flush against the edge.
 
 ```ts
 interface ScreenLayoutDimensions {
@@ -113,7 +115,8 @@ interface ScreenLayoutDimensions {
   y: number;
   width: number;
   height: number;
-  horizontalOffet?: number;
+  horizontalOffset?: number;
+  verticalOffset?: number;
 }
 ```
 
