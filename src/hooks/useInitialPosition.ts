@@ -35,7 +35,7 @@ export const useInitialPosition = ({
       'worklet';
       if (isNumberValue(position)) {
         const positionWithinContainer =
-          position + (layout.x || 0) + (layout.horizontalOffet ?? 0);
+          position + (layout.x || 0) + (layout.horizontalOffset ?? 0);
         return positionWithinContainer;
       }
 
@@ -54,14 +54,15 @@ export const useInitialPosition = ({
           return 0;
       }
     },
-    [edges, layout.horizontalOffet, layout.x]
+    [edges, layout.horizontalOffset, layout.x]
   );
 
   const resolveYPosition = useCallback(
     (position?: number | 'top' | 'bottom' | 'center') => {
       'worklet';
       if (isNumberValue(position)) {
-        const positionWithinContainer = position + (layout.y || 0);
+        const positionWithinContainer =
+          position + (layout.y || 0) + (layout.verticalOffset ?? 0);
         return positionWithinContainer;
       }
 
@@ -80,7 +81,7 @@ export const useInitialPosition = ({
           return 0;
       }
     },
-    [edges, layout.y]
+    [edges, layout.verticalOffset, layout.y]
   );
 
   const initials = useDerivedValue(() => {

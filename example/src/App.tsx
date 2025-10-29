@@ -31,7 +31,8 @@ export default function App() {
             height: height - 80,
             y: 100,
             x: 0,
-            horizontalOffet: 12,
+            horizontalOffset: 12,
+            verticalOffset: 12,
           }}
           edgeHandle={{
             left: <View style={styles.handle} />,

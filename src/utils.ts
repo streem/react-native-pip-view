@@ -9,18 +9,20 @@ export const getEdges = (
   'worklet';
 
   return {
-    minY: currentContainerLayout.y ?? 0,
+    minY:
+      (currentContainerLayout.verticalOffset ?? 0) +
+      (currentContainerLayout.y ?? 0),
     minX:
-      (currentContainerLayout.horizontalOffet ?? 0) +
+      (currentContainerLayout.horizontalOffset ?? 0) +
       (currentContainerLayout.x ?? 0),
 
     maxX:
       currentContainerLayout.width -
       currentScaledElementLayout.value.width -
-      (currentContainerLayout.horizontalOffet ?? 0),
+      (currentContainerLayout.horizontalOffset ?? 0),
     maxY:
       currentContainerLayout.height -
       currentScaledElementLayout.value.height -
-      (currentContainerLayout.horizontalOffet ?? 0),
+      (currentContainerLayout.verticalOffset ?? 0),
   };
 };
