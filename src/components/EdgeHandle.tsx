@@ -50,12 +50,12 @@ export const EdgeHandle = ({
     }),
     right: 0,
     top: 0,
-    zIndex: -1,
+    zIndex: 1,
   }));
 
   return (
     <Animated.View style={[containerStyle, style, styles.button]}>
-      <TouchableOpacity onPress={onPress} style={styles.grow}>
+      <TouchableOpacity onPress={onPress} style={styles.grow} hitSlop={10}>
         {edgeHandle?.left && edgeHandle.right ? (
           <CustomEdgeHandle side={side} />
         ) : (
