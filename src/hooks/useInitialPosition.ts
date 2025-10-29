@@ -54,7 +54,7 @@ export const useInitialPosition = ({
           return 0;
       }
     },
-    [edges.value, layout.horizontalOffet, layout.x]
+    [edges, layout.horizontalOffet, layout.x]
   );
 
   const resolveYPosition = useCallback(
@@ -80,7 +80,7 @@ export const useInitialPosition = ({
           return 0;
       }
     },
-    [edges.value, layout.y]
+    [edges, layout.y]
   );
 
   const initials = useDerivedValue(() => {

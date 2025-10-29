@@ -98,11 +98,7 @@ export const useDragHelpers = () => {
       }
       return false;
     },
-    [
-      destroyArea?.layout,
-      scaledElementLayout.value.height,
-      scaledElementLayout.value.width,
-    ]
+    [destroyArea?.layout, scaledElementLayout]
   );
 
   const handleHideTansition = useCallback(
@@ -116,13 +112,7 @@ export const useDragHelpers = () => {
 
       dockSide.value = side;
     },
-    [
-      dockSide,
-      edges.value.maxX,
-      edges.value.minX,
-      scaledElementLayout.value.width,
-      translationX,
-    ]
+    [dockSide, edges, scaledElementLayout, translationX]
   );
 
   return {

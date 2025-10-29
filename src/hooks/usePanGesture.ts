@@ -183,20 +183,17 @@ export const usePanGesture = (): {
       checkOverDrag,
       translationX,
       translationY,
-      edges.value.minY,
-      edges.value.maxY,
-      edges.value.minX,
-      edges.value.maxX,
+      edges,
       layout.width,
-      scaledElementLayout.value.width,
+      scaledElementLayout,
       hideable,
       dockSide,
       snapToEdges,
       isPanActive,
       isHighlightAreaActive,
       overDragSide,
-      hiddenLeftXValue.value,
-      hiddenRightXValue.value,
+      hiddenLeftXValue,
+      hiddenRightXValue,
       handleHideTansition,
       findNearestYEdge,
     ]
@@ -205,6 +202,7 @@ export const usePanGesture = (): {
   const pan = useMemo(() => {
     return Gesture.Pan()
       .onStart(() => {
+        'worklet';
         if (disabled) {
           return;
         }
@@ -213,6 +211,7 @@ export const usePanGesture = (): {
         isPanActive.set(true);
       })
       .onUpdate((e) => {
+        'worklet';
         if (disabled) {
           return;
         }
@@ -245,6 +244,7 @@ export const usePanGesture = (): {
         translationX.set(newTranslationX);
       })
       .onEnd((event) => {
+        'worklet';
         if (disabled) {
           return;
         }
@@ -262,8 +262,7 @@ export const usePanGesture = (): {
     applyResistance,
     checkOverDrag,
     disabled,
-    edges.value.maxY,
-    edges.value.minY,
+    edges,
     handlePanEnd,
     isPanActive,
     isHighlightAreaActive,
