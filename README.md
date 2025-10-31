@@ -86,6 +86,10 @@ export default function App() {
 | `onDestroy`       | `() => void`                                   | Callback triggered when PiP is dropped in the destroy area.                        |
 | `onPress`         | `() => void`                                   | Callback triggered on PiP tap.                                                     |
 | `edgeHandle`      | `{ left: ReactElement; right: ReactElement; }` | Customizable left and right handles that appear when the PiP is hidden off-screen. |
+| `onStartMove`     | `(position: PiPViewPosition) => void;`         | Callback when pip starts moving                                                    |
+| `onEndMove`       | `(position: PiPViewPosition) => void;`         | Callback when pip ends moving                                                      |
+| `onMinimize`      | `(side: EdgeSide) => void;`                    | Callback when pip is minimized                                                     |
+| `onMaximize`      | `(side: EdgeSide) => void;`                    | Callback when pip is maximized                                                     |
 
 ### 🔻 `DestroyArea`
 
@@ -118,6 +122,16 @@ interface ScreenLayoutDimensions {
   horizontalOffset?: number;
   verticalOffset?: number;
 }
+```
+
+---
+
+### Other Mentioned Types
+
+```ts
+type PiPViewPosition = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+
+type EdgeSide = 'left' | 'right';
 ```
 
 ---
