@@ -64,4 +64,6 @@ export interface PiPViewProps {
   onPress?: () => void;
   /** Callback that exposes animation values for consumers to add extra functionality */
   onUseAnimationValues?: (values: UseAnimationValues) => void;
+  onStartMove?: (position: PiPViewPosition) => void;
+  onEndMove?: (position: PiPViewPosition) => void;
 }

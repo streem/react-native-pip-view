@@ -9,6 +9,7 @@ import { clamp, runOnJS, useDerivedValue } from 'react-native-reanimated';
 
 import { useDragHelpers } from './useDragHelpers';
 import { usePiPViewContext } from '../context/PiPView.provider';
+import { noop } from '../utils';
 
 const VELOCITY_Y_MULTIPLIER = 0.1;
 const VELOCITY_X_MULTIPLIER = 0.05;
@@ -35,6 +36,9 @@ export const usePanGesture = (): {
     onDestroy,
     prevTranslationX,
     prevTranslationY,
+    derivedPosition,
+    onStartMove = noop,
+    // onEndMove = noop,
   } = usePiPViewContext((state) => ({
     snapToEdges: state.snapToEdges,
     _providedEdges: state.edges,
@@ -51,6 +55,9 @@ export const usePanGesture = (): {
     onDestroy: state.onDestroy,
     prevTranslationX: state.prevTranslationX,
     prevTranslationY: state.prevTranslationY,
+    derivedPosition: state.derivedPosition,
+    onStartMove: state.onStartMove,
+    onEndMove: state.onEndMove,
   }));
   const edges = useDerivedValue(
     () =>
@@ -209,6 +216,7 @@ export const usePanGesture = (): {
         prevTranslationX.set(translationX.value);
         prevTranslationY.set(translationY.value);
         isPanActive.set(true);
+        runOnJS(onStartMove)(derivedPosition.value);
       })
       .onUpdate((e) => {
         'worklet';
@@ -273,6 +281,8 @@ export const usePanGesture = (): {
     prevTranslationY,
     translationX,
     translationY,
+    derivedPosition,
+    onStartMove,
   ]);
 
   return { pan, handlePanEnd };
