@@ -9,6 +9,7 @@ import Animated, {
   runOnJS,
   useAnimatedReaction,
   useAnimatedStyle,
+  useSharedValue,
   withSpring,
   withTiming,
   type SharedValue,
@@ -48,6 +49,8 @@ export const EdgeHandle = ({
     onMaximize: state.onMaximize,
   }));
 
+  const hasMinimized = useSharedValue(false);
+
   const containerStyle = useAnimatedStyle(() => ({
     height: elementLayout.value.height,
     transform: [
@@ -67,12 +70,20 @@ export const EdgeHandle = ({
     () => {
       return isVisible.value;
     },
-    (currentVisibility) => {
+    (currentVisibility, previousVisibility) => {
+      if (currentVisibility === previousVisibility) {
+        return;
+      }
+
       const minimizedSide = side === 'left' ? 'right' : 'left';
+      // if the handle is visible, we minimized
       if (currentVisibility) {
+        hasMinimized.set(true);
         runOnJS(onMinimize)(minimizedSide);
       } else {
-        runOnJS(onMaximize)(minimizedSide);
+        if (hasMinimized.value) {
+          runOnJS(onMaximize)(minimizedSide);
+        }
       }
     }
   );
