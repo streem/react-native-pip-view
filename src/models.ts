@@ -7,6 +7,12 @@ export type PiPViewInitialPosition = {
   y: number | 'top' | 'bottom' | 'center';
 };
 
+export type PiPViewPosition =
+  | 'topLeft'
+  | 'topRight'
+  | 'bottomLeft'
+  | 'bottomRight';
+
 export type Dimensions = {
   width: number;
   height: number;

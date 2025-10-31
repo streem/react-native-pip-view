@@ -7,6 +7,7 @@ import { PiPViewProvider } from '../context/PiPView.provider';
 import { PiPViewImpl } from './PiPViewImpl';
 import { getEdges } from '../utils';
 import { useInitialPosition } from '../hooks/useInitialPosition';
+import { useDerivedPosition } from '../hooks/useDerivedPosition';
 
 export const PiPView = ({
   children,
@@ -71,6 +72,12 @@ export const PiPView = ({
     layout,
   });
 
+  const derivedPosition = useDerivedPosition({
+    edges,
+    translationX: positionValues.translationX,
+    translationY: positionValues.translationY,
+  });
+
   const overDragOffset = useDerivedValue(
     () => scaledElementLayout.value.width * 0.4
   );
@@ -104,6 +111,7 @@ export const PiPView = ({
       overDragOffset,
       handleDestroy,
       edgeHandleLayout,
+      derivedPosition,
       ...positionValues,
       ...props,
     }),
@@ -123,6 +131,7 @@ export const PiPView = ({
       edgeHandleLayout,
       edges,
       props,
+      derivedPosition,
     ]
   );
 
