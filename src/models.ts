@@ -66,4 +66,6 @@ export interface PiPViewProps {
   onUseAnimationValues?: (values: UseAnimationValues) => void;
   onStartMove?: (position: PiPViewPosition) => void;
   onEndMove?: (position: PiPViewPosition) => void;
+  onMinimize?: (side: EdgeSide) => void;
+  onMaximize?: (side: EdgeSide) => void;
 }

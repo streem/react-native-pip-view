@@ -6,6 +6,8 @@ import {
   type ViewStyle,
 } from 'react-native';
 import Animated, {
+  runOnJS,
+  useAnimatedReaction,
   useAnimatedStyle,
   withSpring,
   withTiming,
@@ -17,6 +19,7 @@ import { usePiPViewContext } from '../context/PiPView.provider';
 import { type EdgeSide } from '../models';
 import { ArrowButton } from './ArrowButton';
 import { CustomEdgeHandle } from './CustomEdgeHandle';
+import { noop } from '../utils';
 
 interface Props {
   translateX: SharedValue<number>;
@@ -33,9 +36,16 @@ export const EdgeHandle = ({
   style,
   side,
 }: Props) => {
-  const { edgeHandle, elementLayout } = usePiPViewContext((state) => ({
+  const {
+    edgeHandle,
+    elementLayout,
+    onMaximize = noop,
+    onMinimize = noop,
+  } = usePiPViewContext((state) => ({
     edgeHandle: state.edgeHandle,
     elementLayout: state.elementLayout,
+    onMinimize: state.onMinimize,
+    onMaximize: state.onMaximize,
   }));
 
   const containerStyle = useAnimatedStyle(() => ({
@@ -52,6 +62,20 @@ export const EdgeHandle = ({
     top: 0,
     zIndex: 1,
   }));
+
+  useAnimatedReaction(
+    () => {
+      return isVisible.value;
+    },
+    (currentVisibility) => {
+      const minimizedSide = side === 'left' ? 'right' : 'left';
+      if (currentVisibility) {
+        runOnJS(onMinimize)(minimizedSide);
+      } else {
+        runOnJS(onMaximize)(minimizedSide);
+      }
+    }
+  );
 
   return (
     <Animated.View style={[containerStyle, style, styles.button]}>
