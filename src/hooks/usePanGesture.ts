@@ -38,7 +38,7 @@ export const usePanGesture = (): {
     prevTranslationY,
     derivedPosition,
     onStartMove = noop,
-    // onEndMove = noop,
+    onEndMove = noop,
   } = usePiPViewContext((state) => ({
     snapToEdges: state.snapToEdges,
     _providedEdges: state.edges,
@@ -257,6 +257,8 @@ export const usePanGesture = (): {
           return;
         }
 
+        runOnJS(onEndMove)(derivedPosition.value);
+
         if (
           onDestroy &&
           isWithinHighlightArea(translationX.value, translationY.value)
@@ -283,6 +285,7 @@ export const usePanGesture = (): {
     translationY,
     derivedPosition,
     onStartMove,
+    onEndMove,
   ]);
 
   return { pan, handlePanEnd };
