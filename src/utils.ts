@@ -68,4 +68,6 @@ export const isPipAtLeft = ({
   return distanceFromLeft < distanceFromRight;
 };
 
-export const noop = () => {};
+export const noop = () => {
+  'worklet';
+};
