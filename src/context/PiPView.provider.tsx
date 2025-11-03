@@ -3,7 +3,12 @@ import { type LayoutRectangle } from 'react-native';
 import { type SharedValue } from 'react-native-reanimated';
 import { createContext, useContextSelector } from 'use-context-selector';
 
-import { type Dimensions, type EdgeSide, type PiPViewProps } from '../models';
+import {
+  type Dimensions,
+  type EdgeSide,
+  type PiPViewPosition,
+  type PiPViewProps,
+} from '../models';
 
 type PiPViewContextType =
   | (PiPViewProps & {
@@ -17,6 +22,7 @@ type PiPViewContextType =
       translationY: SharedValue<number>;
       prevTranslationX: SharedValue<number>;
       prevTranslationY: SharedValue<number>;
+      derivedPosition: SharedValue<PiPViewPosition>;
 
       isPanActive: SharedValue<boolean>;
       isDestroyed: SharedValue<boolean>;

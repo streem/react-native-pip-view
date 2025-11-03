@@ -6,7 +6,10 @@ import {
   type ViewStyle,
 } from 'react-native';
 import Animated, {
+  runOnJS,
+  useAnimatedReaction,
   useAnimatedStyle,
+  useSharedValue,
   withSpring,
   withTiming,
   type SharedValue,
@@ -17,6 +20,7 @@ import { usePiPViewContext } from '../context/PiPView.provider';
 import { type EdgeSide } from '../models';
 import { ArrowButton } from './ArrowButton';
 import { CustomEdgeHandle } from './CustomEdgeHandle';
+import { noop } from '../utils';
 
 interface Props {
   translateX: SharedValue<number>;
@@ -33,10 +37,19 @@ export const EdgeHandle = ({
   style,
   side,
 }: Props) => {
-  const { edgeHandle, elementLayout } = usePiPViewContext((state) => ({
+  const {
+    edgeHandle,
+    elementLayout,
+    onMaximize = noop,
+    onMinimize = noop,
+  } = usePiPViewContext((state) => ({
     edgeHandle: state.edgeHandle,
     elementLayout: state.elementLayout,
+    onMinimize: state.onMinimize,
+    onMaximize: state.onMaximize,
   }));
+
+  const hasMinimized = useSharedValue(false);
 
   const containerStyle = useAnimatedStyle(() => ({
     height: elementLayout.value.height,
@@ -52,6 +65,28 @@ export const EdgeHandle = ({
     top: 0,
     zIndex: 1,
   }));
+
+  useAnimatedReaction(
+    () => {
+      return isVisible.value;
+    },
+    (currentVisibility, previousVisibility) => {
+      if (currentVisibility === previousVisibility) {
+        return;
+      }
+
+      const minimizedSide = side === 'left' ? 'right' : 'left';
+      // if the handle is visible, we minimized
+      if (currentVisibility) {
+        hasMinimized.set(true);
+        runOnJS(onMinimize)(minimizedSide);
+      } else {
+        if (hasMinimized.value) {
+          runOnJS(onMaximize)(minimizedSide);
+        }
+      }
+    }
+  );
 
   return (
     <Animated.View style={[containerStyle, style, styles.button]}>

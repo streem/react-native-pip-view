@@ -7,6 +7,12 @@ export type PiPViewInitialPosition = {
   y: number | 'top' | 'bottom' | 'center';
 };
 
+export type PiPViewPosition =
+  | 'topLeft'
+  | 'topRight'
+  | 'bottomLeft'
+  | 'bottomRight';
+
 export type Dimensions = {
   width: number;
   height: number;
@@ -58,4 +64,8 @@ export interface PiPViewProps {
   onPress?: () => void;
   /** Callback that exposes animation values for consumers to add extra functionality */
   onUseAnimationValues?: (values: UseAnimationValues) => void;
+  onStartMove?: (position: PiPViewPosition) => void;
+  onEndMove?: (position: PiPViewPosition) => void;
+  onMinimize?: (side: EdgeSide) => void;
+  onMaximize?: (side: EdgeSide) => void;
 }
