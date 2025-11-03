@@ -97,7 +97,7 @@ export const usePanGesture = (): {
 
       const velocityX = event?.velocityX || 0;
       const velocityY = event?.velocityY || 0;
-      const velocityThreshold = 1700;
+      const velocityThreshold = 900;
 
       const [isOverDraggedLeft, isOverDraggedRight] = checkOverDrag(
         translationX.value
