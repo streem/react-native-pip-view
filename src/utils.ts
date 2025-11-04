@@ -3,6 +3,7 @@ import { type SharedValue } from 'react-native-reanimated';
 import {
   type Dimensions,
   type Edges,
+  type PiPViewPosition,
   type ScreenLayoutDimensions,
 } from './models';
 
@@ -31,13 +32,7 @@ export const getEdges = (
   };
 };
 
-export const isPipAtBottom = ({
-  edges,
-  y,
-}: {
-  y: number;
-  edges: Edges | null;
-}) => {
+const isPipAtBottom = ({ edges, y }: { y: number; edges: Edges | null }) => {
   'worklet';
 
   const currY = y;
@@ -50,13 +45,7 @@ export const isPipAtBottom = ({
   return distanceFromBottom < distanceFromTop;
 };
 
-export const isPipAtLeft = ({
-  edges,
-  x,
-}: {
-  x: number;
-  edges: Edges | null;
-}) => {
+const isPipAtLeft = ({ edges, x }: { x: number; edges: Edges | null }) => {
   'worklet';
 
   const minX = edges?.minX ?? 0;
@@ -70,4 +59,45 @@ export const isPipAtLeft = ({
 
 export const noop = () => {
   'worklet';
+};
+
+export const getPosition = ({
+  edges,
+  translationX,
+  translationY,
+}: {
+  edges: Edges | null;
+  translationX: number;
+  translationY: number;
+}) => {
+  'worklet';
+
+  // TODO: fits our use case, but should probably use init values that are provided
+  if (!edges) {
+    return 'topLeft';
+  }
+
+  const x = translationX;
+  const y = translationY;
+  const isBottom = isPipAtBottom({ edges: edges, y });
+  const isLeft = isPipAtLeft({ edges: edges, x });
+  const isRight = !isLeft;
+  const isBottomLeft = isBottom && isLeft;
+  const isBottomRight = isBottom && isRight;
+  const isTop = !isBottom;
+  const isTopLeft = isTop && isLeft;
+  const isTopRight = isTop && isRight;
+  let position: PiPViewPosition = 'topLeft';
+
+  if (isTopLeft) {
+    position = 'topLeft';
+  } else if (isTopRight) {
+    position = 'topRight';
+  } else if (isBottomLeft) {
+    position = 'bottomLeft';
+  } else if (isBottomRight) {
+    position = 'bottomRight';
+  }
+
+  return position;
 };
