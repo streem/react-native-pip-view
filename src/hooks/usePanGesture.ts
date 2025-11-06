@@ -9,7 +9,8 @@ import { clamp, runOnJS, useDerivedValue } from 'react-native-reanimated';
 
 import { useDragHelpers } from './useDragHelpers';
 import { usePiPViewContext } from '../context/PiPView.provider';
-import { noop } from '../utils';
+import { getPosition, noop } from '../utils';
+import type { Edges } from '../models';
 
 const VELOCITY_Y_MULTIPLIER = 0.1;
 const VELOCITY_X_MULTIPLIER = 0.05;
@@ -59,7 +60,7 @@ export const usePanGesture = (): {
     onStartMove: state.onStartMove,
     onEndMove: state.onEndMove,
   }));
-  const edges = useDerivedValue(
+  const edges = useDerivedValue<Edges>(
     () =>
       _providedEdges.value || {
         minX: 0,
@@ -95,6 +96,16 @@ export const usePanGesture = (): {
     (event?: GestureStateChangeEvent<PanGestureHandlerEventPayload>) => {
       'worklet';
 
+      const callOnEndMove = () => {
+        runOnJS(onEndMove)(
+          getPosition({
+            edges: edges.value,
+            translationX: translationX.value,
+            translationY: translationY.value,
+          })
+        );
+      };
+
       const velocityX = event?.velocityX || 0;
       const velocityY = event?.velocityY || 0;
       const velocityThreshold = 900;
@@ -117,6 +128,8 @@ export const usePanGesture = (): {
           translationY.set(translationY.value);
         }
 
+        callOnEndMove();
+
         return;
       } else if (isOverDraggedRight) {
         translationX.set(hiddenRightXValue.value);
@@ -130,6 +143,8 @@ export const usePanGesture = (): {
         if (snapToEdges) {
           translationY.set(translationY.value);
         }
+
+        callOnEndMove();
 
         return;
       }
@@ -185,6 +200,8 @@ export const usePanGesture = (): {
       isPanActive.set(false);
       isHighlightAreaActive.set(false);
       overDragSide.set(null);
+
+      callOnEndMove();
     },
     [
       checkOverDrag,
@@ -203,6 +220,7 @@ export const usePanGesture = (): {
       hiddenRightXValue,
       handleHideTansition,
       findNearestYEdge,
+      onEndMove,
     ]
   );
 
@@ -257,7 +275,13 @@ export const usePanGesture = (): {
           return;
         }
 
-        runOnJS(onEndMove)(derivedPosition.value);
+        runOnJS(onEndMove)(
+          getPosition({
+            edges: edges.value,
+            translationX: event.absoluteX,
+            translationY: event.absoluteY,
+          })
+        );
 
         if (
           onDestroy &&
